@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NUI Interface</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: rgba(0, 0, 0, 0.582);
+        }
+
+        #container {
+            background-color: #797979;
+            padding: 300px;
+            border-radius: 10px;
+            text-align: center;
+            width: 400px;
+            box-shadow: 0 0 0 1px #fff;
+            border-style: solid;
+        }
+
+        #closeButton {
+            background-color: #e74c3c;
+            color: #fff;
+            border: 2px solid #d63031;
+            padding: 25px 30px;
+            cursor: pointer;
+            border-radius: 10px;
+            font-size: 20px;
+            font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+            position: absolute;
+            top: 750px;
+            left: 890px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        #closeButton:hover {
+            background-color: #c0392b;
+            transform: scale(1.1);
+        }
+
+
+        h2 {
+            position: absolute;
+            text-align: center;
+            top: 250px;
+            right: 780px;
+            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+            font-size: 30px;
+            color: #ffffff;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5); 
+            transition: color 0.3s ease, text-shadow 0.3s ease; 
+        }
+
+        h2:hover {
+            color: #a7a7a7; 
+            text-shadow: 0 0 15px #a7a7a727, 0 0 30px #a7a7a728; 
+        }
+
+        #closeButton:hover {
+            background-color: #c0392b;
+        }
+
+        #container2 {
+            background-color: #ffffff98;
+            padding: 110px;
+            border-radius: 10px;
+            width: 200px; 
+            position: absolute;
+            right: 770px;
+            top: 430px;
+            border: 1px solid #ddd;
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        #container2:hover {
+            transform: scale(1.05);
+            background-color: #ffffffcc;
+        }
+
+
+        .input {
+            border: none;
+            padding: 2rem;
+            border-radius: 1rem;
+            background: #d8d3d3;
+            box-shadow: 20px 20px 60px #c5c5c5,
+                        -20px -20px 60px #ffffff;
+            transition: 0.3s;
+            position: absolute;
+            left: 95px;
+            top: 75px;
+        }
+
+        .input:focus {
+            outline-color: #ff0000;
+            background: #e8e8e8;
+            box-shadow: inset 20px 20px 60px #c5c5c5,
+                        inset -20px -20px 60px #ffffff;
+            transition: 0.3s;
+        }
+
+        .input::placeholder {
+            color: #000000; 
+            font-style: italic; 
+        }
+
+
+        .logo {
+            position: absolute;
+            top: 240px; 
+            right: 500px; 
+            width: 100px; 
+            height: auto; 
+            transition: transform 0.3s ease; 
+        }
+
+        .logo:hover {
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <img src="https://media.discordapp.net/attachments/1176106522250575872/1321572728276385897/lixlogonew7.png?ex=676e62c4&is=676d1144&hm=ff3af28bbd698c812206a58c1df16fb687318ef1e852dd88ffeb4b2a1f70b475&=&format=webp&quality=lossless&width=676&height=676" alt="Logo" class="logo">
+
+        <h2>Welcome Clean Your Money</h2>
+        <div id="container2">
+            <input type="number" class="input" placeholder="Money To Clean...">
+        </div>
+        <button id="closeButton">Close</button>
+    </div>
+</body>
+</html>
+
+
+
+    <script>
+        window.addEventListener('message', function(event) {
+            if (event.data.action === 'open') {
+                document.body.style.display = 'flex'; 
+            } else if (event.data.action === 'close') {
+                document.body.style.display = 'none'; 
+            }
+        });
+
+
+function cleanMoney() {
+    const amount = document.querySelector('.input').value; 
+
+    if (amount && !isNaN(amount) && amount > 0) {
+        fetch('https://adv_moneywash/cleanmoney', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                amount: parseInt(amount)
+            })
+        });
+    }
+
+    fetch('https://adv_moneywash/close', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({})
+    });
+}
+
+
+document.querySelector('.input').addEventListener('keypress', function(event) {
+    if (event.key === 'Enter') {
+        cleanMoney(); 
+    }
+});
+
+
+document.getElementById('closeButton').addEventListener('click', function() {
+    cleanMoney(); 
+});
+;
+
+    </script>
+</body>
+</html>
